@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExportContactRequest;
+
 use App\Http\Requests\StoreContactRequest;
 use App\Models\Category;
 use App\Models\Contact;
@@ -39,5 +41,25 @@ class ContactController extends Controller
     public function thanks()
     {
         return view('contact.thanks');
+    }
+
+    public function export(ExportContactRequest $request)
+    {
+        $contacts = Contact::with('category')
+            ->search($request->validated())
+            ->latest()
+            ->orderByDesc('id')
+            ->get();
+        $fileName = 'contacts_' . now()->format('YmdHis') . '.csv';
+
+        return response()->streamDownload(function () use ($contacts) {
+            $stream = fopen('php://output', 'w');
+            fwrite($stream, "\xEF\xBB\xBF");
+            fputcsv($stream, Contact::CSV_HEADERS);
+            foreach ($contacts as $contact) {
+                fputcsv($stream, $contact->toCsvRow());
+            }
+            fclose($stream);
+        }, $fileName, ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 }
