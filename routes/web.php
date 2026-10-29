@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ContactController::class, 'index']);
@@ -12,4 +13,5 @@ Route::get('/thanks', [ContactController::class, 'thanks']);
 Route::middleware('auth')->group(function () {
     Route::get('/admin', [AdminController::class, 'index']);
     Route::get('/contacts/export', [ContactController::class, 'export']);
+    Route::post('/admin/tags', [TagController::class, 'store']);
 });

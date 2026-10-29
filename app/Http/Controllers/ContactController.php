@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ExportContactRequest;
-
 use App\Http\Requests\StoreContactRequest;
 use App\Models\Category;
 use App\Models\Contact;
@@ -50,7 +49,7 @@ class ContactController extends Controller
             ->latest()
             ->orderByDesc('id')
             ->get();
-        $fileName = 'contacts_' . now()->format('YmdHis') . '.csv';
+        $fileName = 'contacts_'.now()->format('YmdHis').'.csv';
 
         return response()->streamDownload(function () use ($contacts) {
             $stream = fopen('php://output', 'w');

@@ -28,13 +28,15 @@ class Contact extends Model
                         ->orWhere('email', 'like', "%{$keyword}%");
                 });
             })
-            ->when($gender, fn(Builder $query, $gender) => $query->where('gender', $gender))
-            ->when($categoryId, fn(Builder $query, $categoryId) => $query->where('category_id', $categoryId))
-            ->when($date, fn(Builder $query, $date) => $query->whereDate('created_at', $date));
+            ->when($gender, fn (Builder $query, $gender) => $query->where('gender', $gender))
+            ->when($categoryId, fn (Builder $query, $categoryId) => $query->where('category_id', $categoryId))
+            ->when($date, fn (Builder $query, $date) => $query->whereDate('created_at', $date));
     }
+
     public const GENDER_LABELS = [1 => '男性', 2 => '女性', 3 => 'その他'];
 
     public const CSV_HEADERS = ['ID', '氏名', '性別', 'メール', '電話', '住所', '建物', 'カテゴリ', '内容', '作成日時'];
+
     protected $fillable = [
         'category_id',
         'first_name',
@@ -46,11 +48,12 @@ class Contact extends Model
         'building',
         'detail',
     ];
+
     public function toCsvRow(): array
     {
         return [
             $this->id,
-            $this->first_name . ' ' . $this->last_name,
+            $this->first_name.' '.$this->last_name,
             self::GENDER_LABELS[$this->gender] ?? '',
             $this->email,
             $this->tel,
