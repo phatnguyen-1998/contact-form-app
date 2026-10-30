@@ -128,7 +128,49 @@ sail npm install
 
 ## APIエンドポイント一覧
 
+### Web
+
+| メソッド | パス                        | 概要                                                   |
+| -------- | --------------------------- | ------------------------------------------------------ |
+| GET      | `/`                         | お問い合わせフォーム入力ページ                         |
+| POST     | `/contacts/confirm`         | 入力内容の確認ページ（バリデーション）                 |
+| POST     | `/contacts`                 | お問い合わせ保存（タグ記録）後 `/thanks` へ            |
+| GET      | `/thanks`                   | サンクスページ                                         |
+| GET      | `/login`                    | ログイン画面（Fortify）                                |
+| POST     | `/login`                    | ログイン（5回/分のレート制限）                         |
+| POST     | `/logout`                   | ログアウト                                             |
+| GET      | `/register`                 | 管理者登録画面                                         |
+| POST     | `/register`                 | 管理者登録後 `/admin` へ                               |
+| GET      | `/admin`                    | 管理画面（一覧・検索・ページネーション 7件） ※認証必須 |
+| GET      | `/admin/contacts/{contact}` | お問い合わせ詳細 ※認証必須                             |
+| DELETE   | `/admin/contacts/{contact}` | お問い合わせ削除 ※認証必須                             |
+| POST     | `/admin/tags`               | タグ追加 ※認証必須                                     |
+| GET      | `/admin/tags/{tag}/edit`    | タグ編集ページ ※認証必須                               |
+| PUT      | `/admin/tags/{tag}`         | タグ更新 ※認証必須                                     |
+| DELETE   | `/admin/tags/{tag}`         | タグ削除 ※認証必須                                     |
+| GET      | `/contacts/export`          | 検索条件に一致するデータのCSVエクスポート（応用）      |
+
+### API（`/api/v1`、認証不要・応用）
+
+| メソッド | パス                         | 概要                               | 成功時 |
+| -------- | ---------------------------- | ---------------------------------- | ------ |
+| GET      | `/api/v1/contacts`           | 一覧取得（検索・ページネーション） | 200    |
+| GET      | `/api/v1/contacts/{contact}` | 詳細取得                           | 200    |
+| POST     | `/api/v1/contacts`           | 新規作成                           | 201    |
+| PUT      | `/api/v1/contacts/{contact}` | 更新                               | 200    |
+| DELETE   | `/api/v1/contacts/{contact}` | 削除                               | 204    |
+
+存在しないIDは 404 `{"error": "お問い合わせが見つかりませんでした。"}` を返します。
+
 ## 開発環境URL
+
+| 用途                 | URL                       |
+| -------------------- | ------------------------- |
+| お問い合わせフォーム | http://localhost/         |
+| 管理画面             | http://localhost/admin    |
+| ログイン             | http://localhost/login    |
+| 管理者登録           | http://localhost/register |
+| phpMyAdmin           | http://localhost:8080     |
 
 ## 作成者
 
