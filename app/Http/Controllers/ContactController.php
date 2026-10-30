@@ -29,7 +29,7 @@ class ContactController extends Controller
         return view('contact.confirm', compact('validated', 'category', 'tags'));
     }
 
-    public function thanks_store(StoreContactRequest $request)
+    public function thanksStore(StoreContactRequest $request)
     {
         $contact = Contact::create($request->safe()->except(['tag_ids']));
         $contact->tags()->attach($request->validated(['tag_ids'], []));
